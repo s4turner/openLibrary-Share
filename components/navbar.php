@@ -19,9 +19,11 @@ $username = $_SESSION["name"] ?? "";
           <a class="nav-link <?= ($page == "cart.php" ? "active" : "") ?>" href="../pages/explore.php">Explore</a>
         </li>     
         <?php if ($isLoggedOn == false) { ?>
+        <!-- Registration Accessed over Login Page 
         <li class="nav-item">
           <a class="nav-link <?= ($page == "../pages/registration.php" ? "active" : "") ?>" href="../pages/registration.php">Sign up</a>
-        </li>        
+        </li>
+        -->
         <li class="nav-item">
           <a class="nav-link <?= ($page == "../pages/login.php" ? "active" : "") ?>" href="../pages/login.php">Login</a>
         </li>                       
@@ -52,7 +54,5 @@ $username = $_SESSION["name"] ?? "";
 </nav>
 
 <?php if ($isLoggedOn) { ?>
-<div>
-  Hello, <?= $username ?>!
-</div>
+
 <?php } ?>

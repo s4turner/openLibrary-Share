@@ -2,11 +2,14 @@
     session_start();
 
     // Debugging Messages
+    /*
     echo "<pre>GET Content: " . print_r($_GET, true) . "</pre>";
     echo "<pre>POST Content: " . print_r($_POST, true) . "</pre>";
     echo "<pre>Session Content: " . print_r($_SESSION, true) . "</pre>";
+    */
 
-    // Login
+    // Login moved into login.php
+    /*
     $loginErrMsg = "";
 
     if (isset($_POST["login"])) {
@@ -24,7 +27,7 @@
         } else {
             $loginErrMsg = "Invalid Credentials!";
         }
-    }
+    }*/
 
     // close session if logout is set
     if (isset($_POST["logout"])) {

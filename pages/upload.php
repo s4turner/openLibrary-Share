@@ -90,11 +90,12 @@
         ?>
     </div>
 
+    <!--
     <div class="col-md">
         <iframe src="../uploads/pdf_691cd1a711bca" width="400px" height="400px" frameborder="0"></iframe>
     </div>
     <div class="col-md">
         <iframe src="../uploads/pdf_691cd15d76884" width="400px" height="400px" frameborder="0"></iframe>
-    </div>
+    </div> -->
 </body>
 </html>

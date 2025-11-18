@@ -1,5 +1,30 @@
 <?php
     include_once "../utils/session.php";
+
+    $loginErrMsg = "";
+    $loginOk = false;
+
+    if (isset($_POST["login"])) {
+        $email = $_POST["email"] ?? "";
+        $password = $_POST["password"] ?? "";
+
+        if ($email == "testusr@localhost.at" && $password == "admin") {
+            $_SESSION["email"] = $email;
+            $_SESSION["name"] = "Mr. Test User";
+            $_SESSION["permission"] = "user";
+
+            $loginOk = true;
+        } else if($email == "admin@localhost.at" && $password == "admin") {
+            $_SESSION["email"] = $email;
+            $_SESSION["name"] = "Mr. Test Admin";
+            $_SESSION["permission"] = "admin";
+
+            $loginOk = true;
+        } else {
+            $loginErrMsg = "Invalid Credentials!";
+        }
+        $name = $_SESSION["name"] ?? "";
+    }
 ?>
 
 <!DOCTYPE html>
@@ -18,6 +43,14 @@
 ?>
    <div class="container">
         <h1>Login</h1>
+
+        <?php if($loginOk) { ?>
+            <div class="mb-3 row">
+                <div class="col-sm-10">
+                    <p>Welcome Back <?= $name ?></p>
+                </div>
+            </div>
+        <?php } else { ?>
 
         <form action="" method="post">
             <div class="mb-3 row">
@@ -39,7 +72,13 @@
             </div>
         </form>
 
+        <div class="mb-3 row">
+            <label for="signup-Link">No Account yet? Create Free Account</label>
+            <a class="nav-link" href="registration.php">Signup</a>
+        </div>
+
     <?php 
+        }
         if(!empty($loginErrMsg))
     ?>
    </div>
