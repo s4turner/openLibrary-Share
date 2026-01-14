@@ -1,0 +1,28 @@
+// Laden der Datenbank Verbindung und
+// überprüfen, dass keine Fehler aufgetreten sind
+$host = "localhost";
+$user = "bif1";
+$password = "123456";
+$dbname = "bif1webtechdb";
+
+// check if "mysqli" is enabled?
+// phpinfo();
+
+$dbObj = new mysqli($host, $user, $password, $dbname);
+
+if ($dbObj->connect_error) {
+    echo "etwas ist schiefgegangen";
+} else {
+   echo "hat funktioniert";
+}
+
+// Schleife über die User in der Datenbank
+// und alle user aus der Datenbank ausgeben
+while (($obj = $result->fetch_object()) != null) {
+        echo "<pre>" . print_r($obj, true) . "</pre>";
+}
+
+// Selber Code nur mit Assoziativen Array Ausgabe
+while (($obj = $result->fetch_assoc()) != null) {
+        echo "<pre>" . print_r($obj, true) . "</pre>";
+}

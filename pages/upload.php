@@ -15,6 +15,7 @@
     <?php 
     include_once "../components/navbar.php";
 
+    // switch if upload ok
     $uploadOk = 1;
 
     if(isset($_POST["btnUpload"])) {
@@ -24,23 +25,27 @@
             echo "<p>Error uploading file. Error code: " . $_FILES["pdf"]["error"] . "</p>";
         } else {
             // no error occured
-            $filename = "../uploads/" . uniqid("pdf_");
+            $filename = "../uploads/" . uniqid("pdf_") . ".pdf";
             $tmpName = $_FILES["pdf"]["tmp_name"];
 
-            /*$fileType = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
-            echo "<p>" . $fileType . "</p>";
-            if($fileType != "pdf" && $fileType != "epub") {
-                echo "<p>Only Pdf or Epub files are allowed!</p>";
-                $uploadOk = 0;
-            }*/
+            // debug info
+            echo "<p>filename Name: " . $filename . "</p>";
+            echo "<p>Tmp Name: " . $tmpName . "</p>";
 
-            //if($uploadOk == 1) {
+            $fileType = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+            echo "<p>" . $fileType . "</p>";
+            if($fileType != "pdf") {
+                echo "<p>Only Pdf files are allowed!</p>";
+                $uploadOk = 0;
+            }
+
+            if($uploadOk == 1) {
                 if(move_uploaded_file($tmpName, $filename) == false) {
                     echo "<p>Error moving uploaded file!</p>";
                 } else {
                     echo "<p>File uploaded successfully: " . $filename . "</p>";
                 }
-            //}
+            }
         }
     }
     ?>

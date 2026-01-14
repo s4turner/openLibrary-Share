@@ -1,36 +1,42 @@
-<?php 
-    session_start();
+<?php
+       
+session_start();
 
-    // Debugging Messages
-    /*
-    echo "<pre>GET Content: " . print_r($_GET, true) . "</pre>";
-    echo "<pre>POST Content: " . print_r($_POST, true) . "</pre>";
-    echo "<pre>Session Content: " . print_r($_SESSION, true) . "</pre>";
-    */
+include_once "utils/database.php";
 
-    // Login moved into login.php
-    /*
-    $loginErrMsg = "";
 
-    if (isset($_POST["login"])) {
-        $email = $_POST["email"] ?? "";
-        $password = $_POST["password"] ?? "";
+// for debugging
+//echo "<pre>GET Content: " . print_r($_GET, true) . "</pre>";
+echo "<pre>POST Content: " . print_r($_POST, true) . "</pre>";    
+// echo "<pre>Server Vars: " . print_r($_SERVER, true) . "</pre>";
+echo "<pre>SESSION Content: " . print_r($_SESSION, true) . "</pre>";
 
-        if ($email == "testusr@localhost.at" && $password == "admin") {
-            $_SESSION["email"] = $email;
-            $_SESSION["name"] = "Mr. Test User";
-            $_SESSION["permission"] = "user";
-        } else if($email == "admin@localhost.at" && $password == "admin") {
-            $_SESSION["email"] = $email;
-            $_SESSION["name"] = "Mr. Test Admin";
-            $_SESSION["permission"] = "admin";
-        } else {
-            $loginErrMsg = "Invalid Credentials!";
-        }
-    }*/
+$loginErrMsg = "";
 
-    // close session if logout is set
-    if (isset($_POST["logout"])) {
-        $_SESSION = [];
+// somebody clicked login button?
+if (isset($_POST["login"])) {
+
+    $email = $_POST["email"] ?? "";
+    $password = $_POST["password"] ?? "";
+
+    $user = login($email, $password);
+    if ($user != null) {
+
+        echo "<pre>Login successfull: " . print_r($user, true) . "</pre>";
+
+        
+        $_SESSION["email"] = $user->email;
+        $_SESSION["name"] = $user->username;
+        $_SESSION["permission"] = "admin";
+        // ... 
+        
+    } else {
+        $loginErrMsg = "Invalid Credentials!";
     }
-?>
+}
+
+
+if (isset($_POST["logout"])) {
+    $_SESSION = [];
+    // session_destroy();
+}
