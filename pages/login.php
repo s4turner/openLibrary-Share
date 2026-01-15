@@ -1,6 +1,6 @@
 <?php
     include_once "../utils/session.php";
-    include_once "../utils/database.php";
+    //include_once "../utils/database.php";
 ?>
 
 <!DOCTYPE html>

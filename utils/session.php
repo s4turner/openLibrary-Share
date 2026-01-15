@@ -2,7 +2,7 @@
        
 session_start();
 
-include_once "utils/database.php";
+include_once "../utils/database.php";
 
 
 // for debugging

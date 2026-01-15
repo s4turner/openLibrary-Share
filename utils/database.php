@@ -1,16 +1,12 @@
 <?php
 
-include_once "model/user.php";
+include_once "../model/user.php";
 
+// Database connection
 $host = "localhost";
 $user = "doeb";
 $password = "admin";
 $dbname = "openLibShare";
-
-// check if "mysqli" is enabled?
-// phpinfo();
-
-
 
 $dbObj = new mysqli($host, $user, $password, $dbname);
 
@@ -28,7 +24,7 @@ function login(string $email, string $password) {
 
     $sql = "select uid, username, email, password from user where email = ?";
 
-    echo "<pre>SQL: " . $sql . "</pre>";
+    //echo "<pre>SQL: " . $sql . "</pre>";
 
     $stmt = $dbObj->prepare($sql);
     $stmt->bind_param("s", $email);
@@ -57,27 +53,17 @@ function login(string $email, string $password) {
     }
 }
 
-/*
-function login2(string $email, string $password)
-{
+// Load Data out of DB
 
+function loadAllFiles() {
     global $dbObj;
 
-    $sql = "select uid, username, email, password from user where email = '$email'";
+    $result = $dbObj->query("select * from file");
 
-    echo "<pre>SQL: " . $sql . "</pre>";
-    $result = $dbObj->query($sql);
-
-    $result = $dbObj->query($sql);
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        $user = new User();
-        $user->id = $row["uid"];
-        $user->username = $row["username"];
-        $user->email = $row["email"];
-        $user->password = $row["password"];
-        return $user;
-    } else {
-        return null;
+    while(($f = $result->fetch_assoc()) != null) {
+        $file = new File();
+        $file->id = intval($f['fid']);
+        $file->fk_uid = intval($f['fk_uid']);
+        $file->filename = $f['filename'];
     }
-}*/
+}
