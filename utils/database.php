@@ -28,6 +28,8 @@ function login(string $email, string $password) {
 
     $sql = "select uid, username, email, password from user where email = ?";
 
+    echo "<pre>SQL: " . $sql . "</pre>";
+
     $stmt = $dbObj->prepare($sql);
     $stmt->bind_param("s", $email);
     $stmt->execute();
@@ -54,3 +56,28 @@ function login(string $email, string $password) {
         return null;
     }
 }
+
+/*
+function login2(string $email, string $password)
+{
+
+    global $dbObj;
+
+    $sql = "select uid, username, email, password from user where email = '$email'";
+
+    echo "<pre>SQL: " . $sql . "</pre>";
+    $result = $dbObj->query($sql);
+
+    $result = $dbObj->query($sql);
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $user = new User();
+        $user->id = $row["uid"];
+        $user->username = $row["username"];
+        $user->email = $row["email"];
+        $user->password = $row["password"];
+        return $user;
+    } else {
+        return null;
+    }
+}*/
