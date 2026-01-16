@@ -6,7 +6,7 @@ include_once "../utils/database.php";
 
 
 // for debugging
-echo "<pre>GET Content: " . print_r($_GET, true) . "</pre>";
+//echo "<pre>GET Content: " . print_r($_GET, true) . "</pre>";
 echo "<pre>POST Content: " . print_r($_POST, true) . "</pre>";    
 // echo "<pre>Server Vars: " . print_r($_SERVER, true) . "</pre>";
 echo "<pre>SESSION Content: " . print_r($_SESSION, true) . "</pre>";

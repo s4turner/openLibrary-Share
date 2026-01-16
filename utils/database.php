@@ -121,3 +121,21 @@ function loadAllUsers() {
     return $users;
 }
 
+function loadAllPdfsAndTags() {
+    global $dbObj;
+
+    $result = $dbObj->query("select * from file left join tag on file.fid = tag.fk_fid");
+
+    $files = [];
+
+    while (($f = $result->fetch_assoc()) != null) {
+        $file = new File();
+        $file->id = intval($f["fid"]);
+        $file->fk_uid = intval($f["fk_uid"]);
+        $file->filename = $f["filename"];
+
+        $files[] = $file;
+    }
+    return $files;
+}
+

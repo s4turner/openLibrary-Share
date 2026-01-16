@@ -38,5 +38,45 @@
     ?>
 </table>
 
+<table>
+    <tr>
+        <th>File ID</th>
+        <th>User ID</th>
+        <th>Filename</th>
+        <th>Permission</th>
+    </tr>
+
+    <?php 
+        $files = loadAllPdfsAndTags();
+
+        foreach ($files as $f) {
+            echo "<tr><td>" . $f->id . "</td>"
+                . "<td>" . $f->fk_uid . "</td>"
+                . "<td>" . htmlspecialchars($f->filename) . "</td>"
+                . "</tr>";
+        }
+    ?>
+</table>
+
+<div class="row">
+    <?php 
+        $dir = "../uploads/";
+        $files = scandir($dir);
+
+        print_r($files);
+
+        foreach($files as $f) {
+            if($f == "." || $f == "..") {
+                continue;
+            }
+
+            echo "<div class='col-6'>";
+            //echo "<div>" . $f . " =&gt; " . mime_content_type($dir . $f) . "</div>";
+            echo "<iframe src=" . $dir . $f . " width='400px' height='400px' style='border:none' title='Embedded PDF Viewer'></iframe>";
+            echo "</div>";
+        }
+    ?>
+</div>
+
 </body>
 </html>
