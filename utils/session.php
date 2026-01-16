@@ -27,10 +27,10 @@ if (isset($_POST["login"])) {
 
         echo "<pre>Login successfull: " . print_r($user, true) . "</pre>";
 
-        
+        $_SESSION["uid"] = $user->id; 
         $_SESSION["email"] = $user->email;
         $_SESSION["name"] = $user->username;
-        $_SESSION["permission"] = "admin";
+        $_SESSION["permission"] = $user->permission;
         // ... 
         
     } else {

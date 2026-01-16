@@ -20,6 +20,14 @@
    <div class="container">
         <h1>Login</h1>
 
+        <?php if($signUpOk) { ?>
+            <div class="mb-3 row">
+                <div class="col-sm-10">
+                    <p>Welcome to Open Library Share <?= $username ?>.</p>
+                </div>
+            </div>
+        <?php } else { ?> 
+
         <form action="" method="post">
             <div class="mb-3 row">
                 <div class="col-sm-10">
@@ -46,7 +54,7 @@
         </div>
 
     <?php 
-        
+        }
         if(!empty($loginErrMsg)) {
             echo "<div class='alert alert-danger'>$loginErrMsg</div>";
         }

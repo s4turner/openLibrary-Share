@@ -18,32 +18,33 @@
     // switch if upload ok
     $uploadOk = 1;
 
+    // debugging file upload to db
     if(isset($_POST["btnUpload"])) {
-        
         if($_FILES["pdf"]["error"] != UPLOAD_ERR_OK) {
             // upload error
             echo "<p>Error uploading file. Error code: " . $_FILES["pdf"]["error"] . "</p>";
         } else {
             // no error occured
-            $filename = "../uploads/" . uniqid("pdf_") . ".pdf";
+            $filename = uniqid("pdf_") . ".pdf";
             $tmpName = $_FILES["pdf"]["tmp_name"];
 
             // debug info
             echo "<p>filename Name: " . $filename . "</p>";
-            echo "<p>Tmp Name: " . $tmpName . "</p>";
+            //echo "<p>Tmp Name: " . $tmpName . "</p>";
 
             $fileType = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
-            echo "<p>" . $fileType . "</p>";
+            //echo "<p>" . $fileType . "</p>";
             if($fileType != "pdf") {
                 echo "<p>Only Pdf files are allowed!</p>";
                 $uploadOk = 0;
             }
 
             if($uploadOk == 1) {
-                if(move_uploaded_file($tmpName, $filename) == false) {
+                if(move_uploaded_file($tmpName, "../uploads/" . $filename) == false) {
                     echo "<p>Error moving uploaded file!</p>";
                 } else {
-                    echo "<p>File uploaded successfully: " . $filename . "</p>";
+                    uploadPdf($filename);
+                    //echo "<p>File uploaded successfully: " . $filename . "</p>";
                 }
             }
         }

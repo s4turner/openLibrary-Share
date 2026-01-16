@@ -19,19 +19,15 @@
     $signUpOk = false;
 
     // setting values for name, email, password
-    $firstname = $_POST["firstname"] ?? "";
-    $surname = $_POST["surname"] ?? "";
+    $username = $_POST["username"] ?? "";
     $email = $_POST["email"] ?? "";
     $password = $_POST["password"] ?? "";
 
     if(isset($_POST["signup"])) {
         $errors = [];
-        if (empty($firstname)) {
-            $errors[] = "<strong>Warning: Firstname is empty!!</strong>";
-        }
-        if (empty($surname)) {
-            $errors[] = "<strong>Warning: Surname is empty!!</strong>";
-        }        
+        if (empty($username)) {
+            $errors[] = "<strong>Warning: username is empty!!</strong>";
+        }     
         if (empty($email)) {
             $errors[] = "<strong>Warning: Email is empty!!</strong>";
         }        
@@ -44,6 +40,7 @@
                 echo "<p>" . $err . "</p>";
             }
         } else {
+            registration($username, $email, $password);
             $signUpOk = true;
         }
     }
@@ -55,21 +52,15 @@
         <?php if($signUpOk) { ?>
             <div class="mb-3 row">
                 <div class="col-sm-10">
-                    <p>Welcome to Open Library Share <?= $firstname . " " . $surname ?>.</p>
+                    <p>Welcome to Open Library Share <?= $username ?>.</p>
                 </div>
             </div>
         <?php } else { ?>
         <form action="" method="post">
             <div class="mb-3 row">
                 <div class="col-sm-10">
-                    <label for="firstname" class="col-sm-2 col-form-label">Firstname</label>
-                    <input type="firstname" class="form-control" id="firstname" name="firstname">
-                </div>
-            </div>
-            <div class="mb-3 row">
-                <div class="col-sm-10">
-                    <label for="surname" class="col-sm-2 col-form-label">Surname</label>
-                    <input type="surname" class="form-control" id="surname" name="surname">
+                    <label for="username" class="col-sm-2 col-form-label">username</label>
+                    <input type="username" class="form-control" id="username" name="username">
                 </div>
             </div>
             <div class="mb-3 row">

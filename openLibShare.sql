@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1deb3
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Jan 15, 2026 at 07:34 PM
--- Server version: 8.0.44-0ubuntu0.24.04.2
--- PHP Version: 8.3.6
+-- Host: 127.0.0.1
+-- Generation Time: Jan 16, 2026 at 04:23 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,10 +18,8 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `openLibShare`
+-- Database: `openlibshare`
 --
-CREATE DATABASE IF NOT EXISTS `openLibShare` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE `openLibShare`;
 
 -- --------------------------------------------------------
 
@@ -30,8 +28,8 @@ USE `openLibShare`;
 --
 
 CREATE TABLE `file` (
-  `fid` int NOT NULL,
-  `fk_uid` int NOT NULL,
+  `fid` int(11) NOT NULL,
+  `fk_uid` int(11) NOT NULL,
   `filename` varchar(40) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -40,7 +38,12 @@ CREATE TABLE `file` (
 --
 
 INSERT INTO `file` (`fid`, `fk_uid`, `filename`) VALUES
-(1, 1, 'pdf_696558eadb26a.pdf');
+(1, 1, 'pdf_696558eadb26a.pdf'),
+(2, 1, 'pdf_6965582bbfbb6.pdf'),
+(3, 1, 'pdf_6965586287b2a.pdf'),
+(11, 2, 'pdf_696a446fe8276.pdf'),
+(12, 2, 'pdf_696a4476482ea.pdf'),
+(13, 2, 'pdf_696a454bed8d5.pdf');
 
 -- --------------------------------------------------------
 
@@ -49,7 +52,7 @@ INSERT INTO `file` (`fid`, `fk_uid`, `filename`) VALUES
 --
 
 CREATE TABLE `permission` (
-  `pid` int NOT NULL,
+  `pid` int(11) NOT NULL,
   `description` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -59,7 +62,7 @@ CREATE TABLE `permission` (
 
 INSERT INTO `permission` (`pid`, `description`) VALUES
 (1, 'admin'),
-(2, 'guest');
+(2, 'user');
 
 -- --------------------------------------------------------
 
@@ -68,8 +71,8 @@ INSERT INTO `permission` (`pid`, `description`) VALUES
 --
 
 CREATE TABLE `tag` (
-  `tid` int NOT NULL,
-  `fk_fid` int NOT NULL,
+  `tid` int(11) NOT NULL,
+  `fk_fid` int(11) NOT NULL,
   `attribut` varchar(30) NOT NULL,
   `value` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -88,11 +91,11 @@ INSERT INTO `tag` (`tid`, `fk_fid`, `attribut`, `value`) VALUES
 --
 
 CREATE TABLE `user` (
-  `uid` int NOT NULL,
+  `uid` int(11) NOT NULL,
   `username` varchar(30) NOT NULL,
   `email` varchar(40) NOT NULL,
-  `password` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `fk_pid` int NOT NULL
+  `password` varchar(100) NOT NULL,
+  `fk_pid` int(11) NOT NULL DEFAULT 2
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -100,7 +103,9 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`uid`, `username`, `email`, `password`, `fk_pid`) VALUES
-(1, 'admin', 'admin@localhost', '$2y$10$xh6Ic86FbJIpEqitZem/jOXBg8mJgpB6oKWTx8LcXe3vdmJPWD98C', 1);
+(1, 'admin', 'admin@localhost', '$2y$10$xh6Ic86FbJIpEqitZem/jOXBg8mJgpB6oKWTx8LcXe3vdmJPWD98C', 1),
+(2, 'doebdoeb', 'doeb@localhost', '$2y$10$JJDg68xbjZ/tfkDcvHmYwOR3nM9hnHd92rqraIKa8RCDWFb0BY3TS', 2),
+(3, 'doebdoeb', 'doeb@localhost', '$2y$10$q292PjMh6hFWqk4Gg87PH.V82CSIBcQ9hUiqSHg94rPB7shBL6.FS', 2);
 
 --
 -- Indexes for dumped tables
@@ -138,25 +143,25 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `file`
 --
 ALTER TABLE `file`
-  MODIFY `fid` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `permission`
 --
 ALTER TABLE `permission`
-  MODIFY `pid` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `pid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tag`
 --
 ALTER TABLE `tag`
-  MODIFY `tid` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `tid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `uid` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
