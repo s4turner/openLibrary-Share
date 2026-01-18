@@ -17,7 +17,7 @@ if ($dbObj->connect_error) {
             . $dbObj->connect_error);
 } else {
     // nice for debugging
-    echo "<pre>Connected successfully</pre>";
+    //echo "<pre>Connected successfully</pre>";
 }
 
 function login(string $email, string $password) {
@@ -89,20 +89,6 @@ function uploadPdf(string $filename) {
 
 // Load Data out of DB
 
-function loadAllFiles() {
-    global $dbObj;
-
-    $result = $dbObj->query("select * from file");
-
-    while(($f = $result->fetch_assoc()) != null) {
-        $file = new File();
-        $file->id = intval($f['fid']);
-        $file->fk_uid = intval($f['fk_uid']);
-        $file->filename = $f['filename'];
-        $files[] = $file;
-    }
-}
-
 function loadAllUsers() {
     global $dbObj;
 
@@ -119,6 +105,24 @@ function loadAllUsers() {
     }
 
     return $users;
+}
+
+// PDF Management
+
+function loadAllFiles() {
+    global $dbObj;
+
+    $result = $dbObj->query("select * from file");
+
+    while(($f = $result->fetch_assoc()) != null) {
+        $file = new File();
+        $file->id = intval($f['fid']);
+        $file->fk_uid = intval($f['fk_uid']);
+        $file->filename = $f['filename'];
+        $files[] = $file;
+    }
+
+    return $files;
 }
 
 function loadAllPdfsAndTags() {
@@ -139,3 +143,124 @@ function loadAllPdfsAndTags() {
     return $files;
 }
 
+function loadUploadsByUser(int $uid) {
+    global $dbObj;
+
+    $stmt = $dbObj->prepare("select * from file where fk_uid = ?");
+    $stmt->bind_param("i", $uid);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    $files = [];
+    while (($f = $result->fetch_assoc()) != null) {
+        $file = new File();
+        $file->id = intval($f["fid"]);
+        $file->fk_uid = intval($f["fk_uid"]);
+        $file->filename = $f["filename"];
+
+        $files[] = $file;
+    }
+
+    return $files;
+}
+
+function deleteFileByName(string $filename) {
+    global $dbObj;
+
+    $stmt = $dbObj->prepare("delete from file where filename = ?");
+    $stmt->bind_param("s", $filename);
+    $stmt->execute();
+}
+
+function getFileIdByName(string $filename) {
+    global $dbObj;
+
+    $stmt = $dbObj->prepare("select fid from file where filename = ?");
+    $stmt->bind_param("s", $filename);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if($row = $result->fetch_assoc()) {
+        return intval($row["fid"]);
+    }
+    
+    return null;
+}
+
+// Tag Management
+
+function addTagToFile(int $fid, string $tagValue) {
+    global $dbObj;
+
+    $stmt = $dbObj->prepare("insert into tag (fk_fid, value) values (?, ?)");
+    $stmt->bind_param("is", $fid, $tagValue);
+    $success = $stmt->execute();
+
+    if (!$success) {
+        error_log("Execute failed: " . $stmt->error);
+    }
+
+    $stmt->close();
+}
+
+function loadTagsByFileWithId(int $fid) {
+    global $dbObj;
+
+    $stmt = $dbObj->prepare("select tid, fk_fid, attribut, value from tag where fk_fid = ?");
+    $stmt->bind_param("i", $fid);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    $tags = [];
+    while (($t = $result->fetch_assoc()) != null) {
+        $tags[] = $t;
+    }
+
+    return $tags;
+}
+
+function deleteTagFromFile(int $tid) {
+    global $dbObj;
+
+    $stmt = $dbObj->prepare("delete from tag where tid = ?");
+    $stmt->bind_param("i", $tid);
+    $success = $stmt->execute();
+
+    if (!$success) {
+        error_log("Execute failed: " . $stmt->error);
+    }
+
+    $stmt->close();
+}
+
+// User Management
+
+function deleteUser(int $uid) {
+    global $dbObj;
+
+    $stmt = $dbObj->prepare("delete from user where uid = ?");
+    $stmt->bind_param("i", $uid);
+    $success = $stmt->execute();
+
+    if (!$success) {
+        error_log("Execute failed: " . $stmt->error);
+    }
+
+    $stmt->close();
+}
+
+function deleteAllTagsFromFile(int $fid) {
+    global $dbObj;
+
+    $stmt = $dbObj->prepare("delete from tag where fk_fid = ?");
+    $stmt->bind_param("i", $fid);
+    $success = $stmt->execute();
+
+    if (!$success) {
+        error_log("Execute failed: " . $stmt->error);
+    }
+
+    $stmt->close();
+}

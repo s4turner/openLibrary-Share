@@ -7,9 +7,9 @@ include_once "../utils/database.php";
 
 // for debugging
 //echo "<pre>GET Content: " . print_r($_GET, true) . "</pre>";
-echo "<pre>POST Content: " . print_r($_POST, true) . "</pre>";    
+//echo "<pre>POST Content: " . print_r($_POST, true) . "</pre>";    
 // echo "<pre>Server Vars: " . print_r($_SERVER, true) . "</pre>";
-echo "<pre>SESSION Content: " . print_r($_SESSION, true) . "</pre>";
+//echo "<pre>SESSION Content: " . print_r($_SESSION, true) . "</pre>";
 
 $loginErrMsg = "";
 
@@ -41,5 +41,5 @@ if (isset($_POST["login"])) {
 
 if (isset($_POST["logout"])) {
     $_SESSION = [];
-    // session_destroy();
+    session_destroy();
 }
