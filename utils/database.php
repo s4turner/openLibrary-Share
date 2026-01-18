@@ -264,3 +264,23 @@ function deleteAllTagsFromFile(int $fid) {
 
     $stmt->close();
 }
+
+function searchFilesByTag($tagValue) {
+    global $dbObj;
+    $stmt = $dbObj->prepare("SELECT DISTINCT f.* FROM file f 
+                             INNER JOIN tag t ON f.fid = t.fkfid 
+                             WHERE LOWER(t.value) LIKE ?");
+    $searchTerm = '%' . strtolower($tagValue) . '%';
+    $stmt->bind_param('s', $searchTerm);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $files = [];
+    while ($f = $result->fetch_assoc()) {
+        $file = new File();
+        $file->id = intval($f['fid']);
+        $file->fkuid = intval($f['fkuid']);
+        $file->filename = $f['filename'];
+        $files[] = $file;
+    }
+    return $files;
+}
